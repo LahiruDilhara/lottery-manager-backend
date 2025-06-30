@@ -1,0 +1,86 @@
+# 🔧 Node.js / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 🛠 TypeScript
+dist/
+build/
+*.tsbuildinfo
+
+# 🧪 Test coverage
+coverage/
+.nyc_output/
+
+# ⚙️ Env files (never commit secrets!)
+.env
+.env.*
+!.env.example  # Optional sample env file to commit
+
+# 📦 Package lock files (optional, only include one if using monorepo root locks)
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# 🔁 Logs
+logs/
+*.log
+*.log.*
+log.txt
+
+# 💾 Databases / local dev files
+*.sqlite
+*.db
+dump.rdb
+
+# 📂 OS / Editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 🐳 Docker related
+Dockerfile
+docker-compose.yaml
+.docker/
+.dockerignore
+
+# 🔐 SSL keys (you can keep public keys if using RS256)
+*.pem
+*.key
+*.crt
+
+# 📦 Lerna (if used for managing monorepos)
+lerna-debug.log
+
+# 🧪 VS Code test results
+test-results/
+playwright-report/
+jest-html-reporters-*
+
+# 📦 Shared Packages (if you symlink or build shared-libs/)
+shared-libs/dist/
+shared-libs/node_modules/
+
+# 🧹 Build tools
+.eslintcache
+.cache/
+.next/
+out/
+
+# 📚 Docs or generated files
+*.docx
+*.pdf
+*.xlsx
+*.pptx
+
+# 📱 Mobile (if applicable in future)
+android/
+ios/
+
+# markdown files
+Plan.md
