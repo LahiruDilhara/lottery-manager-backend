@@ -84,3 +84,9 @@ ios/
 
 # markdown files
 Plan.md
+
+# Config files
+default.json
+dev.json
+prod.json
+test.json
