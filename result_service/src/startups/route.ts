@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import lotteryRouter from '../routes/lottery';
+import lotteryRouter from '../routes/lotteryRoute';
 
 export default function configMiddlewareAndRoutes(app: Application): void {
     // Enable CORS

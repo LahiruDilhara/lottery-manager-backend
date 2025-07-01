@@ -4,17 +4,11 @@ import { Failure } from "../core/Failure";
 import LotteryRepository from '../repositories/lotteryRepository';
 import Lottery from "../model/lottery";
 
-class LotteryService {
+export default class LotteryService {
     lotteryRepository: LotteryRepository = new LotteryRepository();
 
     async createLottery(dto: AddLotteryDto): Promise<Result<Lottery, Failure>> {
-        const validationResult = dto.isValid();
-
-        if (validationResult.isErr()) {
-            return err(validationResult.error);
-        }
-
-        let lottery = await this.lotteryRepository.addLottery(dto);
+        let lottery = await this.lotteryRepository.addLottery(dto.toModel());
 
         return lottery;
     }

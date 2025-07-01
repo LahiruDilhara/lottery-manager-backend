@@ -3,11 +3,8 @@ import Lottery from "../../model/lottery";
 import { Result, err, ok } from "neverthrow";
 import { Failure } from '../../core/Failure';
 
-class AddLotteryDto extends Lottery {
-    constructor(name: string) {
-        super();
-        this.name = name;
-    }
+class AddLotteryDto {
+    name?: string;
 
     isValid(): Result<void, Failure> {
         const schema = Joi.object({
@@ -19,6 +16,17 @@ class AddLotteryDto extends Lottery {
             return err(Failure.fromJoiError(error, 400));
         }
         return ok(undefined);
+    }
+
+    toModel(): Lottery {
+        return new Lottery({
+            name: this.name,
+        });
+    }
+
+    static fromAny(data: any): AddLotteryDto {
+        const dto: AddLotteryDto = Object.assign(new AddLotteryDto(), data);
+        return dto;
     }
 }
 
