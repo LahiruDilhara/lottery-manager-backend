@@ -28,4 +28,24 @@ export class LotteryController {
         }
         return res.status(201).send(lotteryOrError.value);
     }
+
+    static async getLotteryByName(req: Request, res: Response) {
+        const name = req.params.name;
+        let lotteryOrError = await service.getLotteryByName(name);
+
+        if (lotteryOrError.isErr()) {
+            return res.status(lotteryOrError.error.code).send(lotteryOrError.error);
+        }
+        return res.status(200).send(lotteryOrError.value);
+    }
+
+    static async deleteLotteryById(req: Request, res: Response) {
+        const id = req.params.id;
+        let lotteryOrError = await service.deleteLotteryById(id);
+
+        if (lotteryOrError.isErr()) {
+            return res.status(lotteryOrError.error.code).send(lotteryOrError.error);
+        }
+        return res.status(200).send(lotteryOrError.value);
+    }
 }
