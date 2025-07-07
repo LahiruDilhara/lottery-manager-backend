@@ -8,6 +8,7 @@ export default class ResultRepository {
             const newResult = await lResult.create(result);
             return ok(newResult);
         } catch (error: any) {
+            console.log(typeof error);
             console.error(`Failed to add result: ${result}. The error is: ${error}`);
             return err(new Failure("Failed to add result", 500));
         }

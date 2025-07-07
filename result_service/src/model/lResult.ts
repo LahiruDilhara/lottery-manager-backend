@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Lottery from "./lottery";
+import ResultChecker from "./resultChecker";
 
 type lResultData = {
     numbers: string[],
@@ -12,6 +13,7 @@ interface lResult extends mongoose.Document {
     date: Date;
     drawNumber: number;
     lottery: Lottery | mongoose.Types.ObjectId;
+    checker: ResultChecker | mongoose.Types.ObjectId;
     data: lResultData;
 }
 
@@ -31,6 +33,11 @@ const lResultSchema = new mongoose.Schema<lResult>({
     lottery: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Lottery",
+        required: true,
+    },
+    checker: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ResultChecker",
         required: true,
     },
     data: {

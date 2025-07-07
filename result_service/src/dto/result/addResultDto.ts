@@ -7,6 +7,7 @@ export default class AddResultDto {
     date?: Date;
     drawNumber?: number;
     lotteryId?: string;
+    checkerId?: string;
     numbers?: string[];
     symboles?: string[] = [];
     specialSymboles?: string[] = [];
@@ -21,6 +22,7 @@ export default class AddResultDto {
             date: Joi.date().required(),
             drawNumber: Joi.number().required(),
             lotteryId: Joi.string().required(),
+            checkerId: Joi.string().required(),
             numbers: Joi.array().items(Joi.string()),
             symboles: Joi.array().items(Joi.string()),
             specialSymboles: Joi.array().items(Joi.string()),
@@ -37,6 +39,7 @@ export default class AddResultDto {
             date: this.date,
             drawNumber: this.drawNumber,
             lottery: this.lotteryId,
+            checker: this.checkerId,
             data: {
                 numbers: this.numbers,
                 symboles: this.symboles,
