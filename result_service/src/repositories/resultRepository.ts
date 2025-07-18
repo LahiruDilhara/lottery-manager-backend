@@ -16,7 +16,7 @@ export default class ResultRepository {
 
     async getResultByLotteryId(lotteryId: string): Promise<Result<lResult | null, Failure>> {
         try {
-            const result = await lResult.findOne({ lottery: lotteryId }).populate("lottery");
+            const result = await lResult.findOne({ lottery: lotteryId }).populate("lottery").populate("checker");
             return ok(result);
         } catch (error: any) {
             console.error(`Failed to get result by lottery id: ${lotteryId}. The error is: ${error}`);
@@ -25,7 +25,7 @@ export default class ResultRepository {
     }
     async getAllResults(): Promise<Result<lResult[], Failure>> {
         try {
-            const results = await lResult.find().populate("lottery");
+            const results = await lResult.find().populate("lottery").populate("checker");
             return ok(results);
         } catch (error: any) {
             console.error(`Failed to get all results. The error is: ${error}`);
@@ -59,7 +59,7 @@ export default class ResultRepository {
             const result = await lResult.findOne({
                 lottery: lotteryId,
                 date: { $gte: start, $lt: end },
-            }).populate("lottery");
+            }).populate("lottery").populate("checker");
 
             return ok(result);
         } catch (error: any) {
@@ -71,7 +71,7 @@ export default class ResultRepository {
     }
     async getResultByLotteryIdAndDrawNumber(lotteryId: string, drawNumber: number): Promise<Result<lResult | null, Failure>> {
         try {
-            const result = await lResult.findOne({ lottery: lotteryId, drawNumber: drawNumber }).populate("lottery");
+            const result = await lResult.findOne({ lottery: lotteryId, drawNumber: drawNumber }).populate("lottery").populate("checker");
             return ok(result);
         } catch (error: any) {
             console.error(`Failed to get result by lottery id: ${lotteryId} and draw number: ${drawNumber}. The error is: ${error}`);

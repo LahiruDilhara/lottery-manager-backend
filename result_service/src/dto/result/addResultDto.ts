@@ -8,9 +8,7 @@ export default class AddResultDto {
     drawNumber?: number;
     lotteryId?: string;
     checkerId?: string;
-    numbers?: string[];
-    symboles?: string[] = [];
-    specialSymboles?: string[] = [];
+    data?:any;
 
     static fromAny(data: any): AddResultDto {
         const dto: AddResultDto = Object.assign(new AddResultDto(), data);
@@ -23,9 +21,7 @@ export default class AddResultDto {
             drawNumber: Joi.number().required(),
             lotteryId: Joi.string().required(),
             checkerId: Joi.string().required(),
-            numbers: Joi.array().items(Joi.string()),
-            symboles: Joi.array().items(Joi.string()),
-            specialSymboles: Joi.array().items(Joi.string()),
+            data: Joi.object().required(),
         });
         const { error } = schema.validate(this);
         if (error) {
@@ -40,11 +36,7 @@ export default class AddResultDto {
             drawNumber: this.drawNumber,
             lottery: this.lotteryId,
             checker: this.checkerId,
-            data: {
-                numbers: this.numbers,
-                symboles: this.symboles,
-                specialSymboles: this.specialSymboles
-            }
+            data: this.data
         });
     }
 }

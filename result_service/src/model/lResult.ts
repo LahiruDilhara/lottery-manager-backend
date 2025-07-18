@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 import Lottery from "./lottery";
 import ResultChecker from "./resultChecker";
 
-type lResultData = {
-    numbers: string[],
-    symboles: string[],
-    specialSymboles: string[],
-}
 
 interface lResult extends mongoose.Document {
     _id: mongoose.Types.ObjectId;
@@ -14,7 +9,7 @@ interface lResult extends mongoose.Document {
     drawNumber: number;
     lottery: Lottery | mongoose.Types.ObjectId;
     checker: ResultChecker | mongoose.Types.ObjectId;
-    data: lResultData;
+    data: any;
 }
 
 const lResultSchema = new mongoose.Schema<lResult>({
@@ -41,11 +36,7 @@ const lResultSchema = new mongoose.Schema<lResult>({
         required: true,
     },
     data: {
-        type: {
-            numbers: [{ type: String }],
-            symboles: [{ type: String }],
-            specialSymboles: [{ type: String }],
-        },
+        type: Object,
         required: true,
     }
 });
