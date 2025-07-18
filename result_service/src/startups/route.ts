@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import lotteryRouter from '../routes/lotteryRoute';
 import resultRouter from '../routes/resultRoute';
 import checkerRouter from '../routes/checkerRoute';
+import resultCheckRouter from '../routes/resultCheckRoute';
 
 export default function configMiddlewareAndRoutes(app: Application): void {
     // Enable CORS
@@ -26,4 +27,5 @@ function configRouteMiddlware(app: Application): void {
     app.use('/api/v1/lotteries', lotteryRouter);
     app.use("/api/v1/results", resultRouter);
     app.use("/api/v1/checkers", checkerRouter);
+    app.use("/api/v1/result-checks", resultCheckRouter);
 }

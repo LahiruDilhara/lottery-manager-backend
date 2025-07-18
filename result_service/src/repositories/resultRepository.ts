@@ -69,9 +69,12 @@ export default class ResultRepository {
             return err(new Failure("Failed to get result", 500));
         }
     }
-    async getResultByLotteryIdAndDrawNumber(lotteryId: string, drawNumber: number): Promise<Result<lResult | null, Failure>> {
+    async getResultByLotteryIdAndDrawNumber(lotteryId: string, drawNumber: number): Promise<Result<lResult, Failure>> {
         try {
             const result = await lResult.findOne({ lottery: lotteryId, drawNumber: drawNumber }).populate("lottery").populate("checker");
+            if (result === null) {
+                return err(new Failure("Result not found for the given lotteryId and drawNumber", 404));
+            }
             return ok(result);
         } catch (error: any) {
             console.error(`Failed to get result by lottery id: ${lotteryId} and draw number: ${drawNumber}. The error is: ${error}`);

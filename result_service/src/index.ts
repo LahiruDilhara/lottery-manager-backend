@@ -4,6 +4,7 @@ import connectToDatabase from "./startups/database";
 import configMiddlewareAndRoutes from "./startups/route";
 import bindNetwork from "./startups/bindApp";
 import debug from "debug";
+import configureJsonLogic from "./startups/jsonLogicConf";
 
 async function main() {
     const app: Application = express();
@@ -15,5 +16,6 @@ async function main() {
     await connectToDatabase();
     configMiddlewareAndRoutes(app);
     bindNetwork(app);
+    configureJsonLogic();
 }
 main();
