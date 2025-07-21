@@ -3,9 +3,9 @@ import CheckerRepository from "../repositories/checkerRepository";
 import { Failure } from "../core/Failure";
 import AddCheckerDto from "../dto/checker/addCheckerDto";
 import ResultChecker from "../model/resultChecker";
-import { container, inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export default class CheckerService {
     constructor(@inject(CheckerRepository) private checkerRepository: CheckerRepository) { }
 
@@ -28,5 +28,3 @@ export default class CheckerService {
         return this.checkerRepository.deleteCheckerById(id);
     }
 }
-
-container.registerSingleton(CheckerRepository);

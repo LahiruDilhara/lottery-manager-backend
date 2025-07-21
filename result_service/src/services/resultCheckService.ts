@@ -3,9 +3,9 @@ import ResultRepository from "../repositories/resultRepository";
 import { Failure } from "../core/Failure";
 import jsonLogic from "json-logic-js";
 import ResultChecker from "../model/resultChecker";
-import { container, inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export default class ResultCheckService {
     constructor(@inject(ResultRepository) private resultRepository: ResultRepository) { }
 
@@ -32,6 +32,3 @@ export default class ResultCheckService {
         // }
     }
 }
-
-
-container.registerSingleton(ResultCheckService);

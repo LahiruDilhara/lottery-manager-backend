@@ -3,9 +3,9 @@ import AddLotteryDto from "../dto/lottery/addLotteryDto";
 import { Failure } from "../core/Failure";
 import LotteryRepository from '../repositories/lotteryRepository';
 import Lottery from "../model/lottery";
-import { container, inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export default class LotteryService {
     constructor(@inject(LotteryRepository) private lotteryRepository: LotteryRepository) { }
 
@@ -27,6 +27,3 @@ export default class LotteryService {
         return this.lotteryRepository.deleteLotteryById(id);
     }
 }
-
-
-container.registerSingleton(LotteryService);

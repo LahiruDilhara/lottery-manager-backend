@@ -2,9 +2,9 @@ import debug from "debug";
 import { Failure } from "../core/Failure";
 import Lottery from "../model/lottery";
 import { ok, err, Result } from "neverthrow";
-import { container, injectable } from "tsyringe";
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export default class LotteryRepository {
     async addLottery(lottery: Lottery): Promise<Result<Lottery, Failure>> {
         try {
@@ -49,5 +49,3 @@ export default class LotteryRepository {
         }
     }
 }
-
-container.registerSingleton(LotteryRepository);

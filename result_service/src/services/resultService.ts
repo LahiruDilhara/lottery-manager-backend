@@ -3,9 +3,9 @@ import lResult from "../model/lResult";
 import ResultRepository from "../repositories/resultRepository";
 import { Failure } from "../core/Failure";
 import AddResultDto from "../dto/result/addResultDto";
-import { container, inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export default class ResultService {
     constructor(@inject(ResultRepository) private resultRepository: ResultRepository) { }
 
@@ -33,5 +33,3 @@ export default class ResultService {
         return this.resultRepository.getResultByLotteryIdAndDrawNumber(lotteryId, drawNumber);
     }
 }
-
-container.registerSingleton(ResultService);
