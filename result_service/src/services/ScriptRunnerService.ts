@@ -8,12 +8,12 @@ import { Failure } from "../core/Failure";
 export class ScriptRunnerService {
     constructor(@inject(VM2PoolManager) private vm2PoolManager: VM2PoolManager) { }
 
-    async runScript<I = any, O = any>(script: string, input: I): Promise<Result<O, Failure>> {
+    async runScript<I = any, O = any>(script: string, input: I, output: O = {} as O): Promise<Result<O, Failure>> {
         const vm = await this.vm2PoolManager.acquire();
 
         const sandbox: any = {
             input,
-            output: {}
+            output
         };
 
         try {

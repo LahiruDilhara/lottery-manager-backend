@@ -6,7 +6,7 @@ interface ResultChecker extends mongoose.Document {
     description: string;
     lottery: Lottery | mongoose.Types.ObjectId;
     addedAt?: Date;
-    script: String;
+    script: string;
 }
 
 export const ResultCheckerSchema = new mongoose.Schema<ResultChecker>({
