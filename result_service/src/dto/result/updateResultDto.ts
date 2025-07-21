@@ -2,6 +2,7 @@ import { Result, err, ok } from "neverthrow";
 import { Failure } from "../../core/Failure";
 import Joi from "joi";
 import lResult from "../../model/lResult";
+import { Types } from "mongoose";
 
 export default class UpdateResultDto {
     date?: Date;
@@ -30,8 +31,9 @@ export default class UpdateResultDto {
         return ok(undefined);
     }
 
-    toModel(): lResult {
+    toModel(resultId: string): lResult {
         return new lResult({
+            _id: new Types.ObjectId(resultId),
             date: this.date,
             drawNumber: this.drawNumber,
             lottery: this.lotteryId,

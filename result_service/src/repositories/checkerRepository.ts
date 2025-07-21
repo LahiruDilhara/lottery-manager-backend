@@ -3,6 +3,7 @@ import { Failure } from "../core/Failure";
 import { ok, err, Result } from "neverthrow";
 import ResultChecker from "../model/resultChecker";
 import { singleton } from "tsyringe";
+import { Types } from "mongoose";
 
 @singleton()
 export default class CheckerRepository {
@@ -57,6 +58,20 @@ export default class CheckerRepository {
         } catch (error: any) {
             console.error(`Failed to delete checker by id: ${id}. The error is: ${error}`);
             return err(new Failure("Failed to delete checker", 500));
+        }
+    }
+
+    async updateCheckerById(id: string, updatedData: Partial<ResultChecker>): Promise<Result<ResultChecker, Failure>> {
+        try {
+            updatedData._id = new Types.ObjectId(id); // Ensure the _id field is set to the id being updated
+            const checker = await ResultChecker.findByIdAndUpdate(id, { $set: updatedData }, { new: true });
+            if (!checker) {
+                return err(new Failure("ResultChecker not found", 404));
+            }
+            return ok(checker);
+        } catch (error: any) {
+            debug("debug")(`Failed to update checker by id: ${id}. The error is: ${error}`);
+            return err(new Failure("Failed to update checker", 500));
         }
     }
 }

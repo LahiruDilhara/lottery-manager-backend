@@ -86,7 +86,6 @@ export default class ResultRepository {
 
     async updateResultById(id: string, updatedData: Partial<lResult>): Promise<Result<lResult, Failure>> {
         try {
-            updatedData._id = new Types.ObjectId(id); // Ensure the _id field is set to the id being updated
             const result = await lResult.findByIdAndUpdate(id, { $set: updatedData }, { new: true });
             if (!result) {
                 return err(new Failure("Result not found", 404));

@@ -85,7 +85,7 @@ export class ResultController {
             return res.status(400).send(new Failure("ID is required for update", 400));
         }
 
-        const updatedData = dto.toModel();
+        const updatedData = dto.toModel(id);
         let resultOrError = await service.updateResultById(id, updatedData);
 
         if (resultOrError.isErr()) {
