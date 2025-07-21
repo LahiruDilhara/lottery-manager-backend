@@ -16,6 +16,6 @@ async function main() {
     await connectToDatabase();
     configMiddlewareAndRoutes(app);
     bindNetwork(app);
-    configureJsonLogic();
+    // configureJsonLogic();
 }
 main();

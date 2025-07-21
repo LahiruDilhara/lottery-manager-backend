@@ -6,13 +6,13 @@ import ResultChecker from "../../model/resultChecker";
 class AddCheckerDto {
     description?: string;
     lotteryId?: string;
-    checker?: any;
+    script?: string;
 
     isValid(): Result<void, Failure> {
         const schema = Joi.object({
             description: Joi.string().min(3).max(1000).required(),
             lotteryId: Joi.string().required(),
-            checker: Joi.object().required()
+            script: Joi.string().required()
         });
 
         const { error } = schema.validate(this);
@@ -26,7 +26,7 @@ class AddCheckerDto {
         return new ResultChecker({
             description: this.description,
             lottery: this.lotteryId,
-            checker: this.checker,
+            script: this.script,
         });
     }
 
