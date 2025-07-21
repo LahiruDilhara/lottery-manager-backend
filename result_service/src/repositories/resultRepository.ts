@@ -2,6 +2,8 @@ import { ok, err, Result } from "neverthrow";
 import lResult from "../model/lResult";
 import { Failure } from "../core/Failure";
 import { singleton } from "tsyringe";
+import debug from "debug";
+import { Types } from "mongoose";
 
 @singleton()
 export default class ResultRepository {
@@ -11,7 +13,7 @@ export default class ResultRepository {
             return ok(newResult);
         } catch (error: any) {
             console.log(typeof error);
-            console.error(`Failed to add result: ${result}. The error is: ${error}`);
+            debug("debug")(`Failed to add result: ${result}. The error is: ${error}`);
             return err(new Failure("Failed to add result", 500));
         }
     }
@@ -21,7 +23,7 @@ export default class ResultRepository {
             const result = await lResult.findOne({ lottery: lotteryId }).populate("lottery").populate("checker");
             return ok(result);
         } catch (error: any) {
-            console.error(`Failed to get result by lottery id: ${lotteryId}. The error is: ${error}`);
+            debug("debug")(`Failed to get result by lottery id: ${lotteryId}. The error is: ${error}`);
             return err(new Failure("Failed to get result", 500));
         }
     }
@@ -30,7 +32,7 @@ export default class ResultRepository {
             const results = await lResult.find().populate("lottery").populate("checker");
             return ok(results);
         } catch (error: any) {
-            console.error(`Failed to get all results. The error is: ${error}`);
+            debug("debug")(`Failed to get all results. The error is: ${error}`);
             return err(new Failure("Failed to get all results", 500));
         }
     }
@@ -42,7 +44,7 @@ export default class ResultRepository {
             }
             return ok(result);
         } catch (error: any) {
-            console.error(`Failed to delete result by id: ${id}. The error is: ${error}`);
+            debug("debug")(`Failed to delete result by id: ${id}. The error is: ${error}`);
             return err(new Failure("Failed to delete result", 500));
         }
     }
@@ -65,9 +67,7 @@ export default class ResultRepository {
 
             return ok(result);
         } catch (error: any) {
-            console.error(
-                `Failed to get result by lottery id: ${lotteryId} and date: ${date}. The error is: ${error}`
-            );
+            debug("debug")(`Failed to get result by lottery id: ${lotteryId} and date: ${date}. The error is: ${error}`);
             return err(new Failure("Failed to get result", 500));
         }
     }
@@ -79,8 +79,22 @@ export default class ResultRepository {
             }
             return ok(result);
         } catch (error: any) {
-            console.error(`Failed to get result by lottery id: ${lotteryId} and draw number: ${drawNumber}. The error is: ${error}`);
+            debug("debug")(`Failed to get result by lottery id: ${lotteryId} and draw number: ${drawNumber}. The error is: ${error}`);
             return err(new Failure("Failed to get result", 500));
+        }
+    }
+
+    async updateResultById(id: string, updatedData: Partial<lResult>): Promise<Result<lResult, Failure>> {
+        try {
+            updatedData._id = new Types.ObjectId(id); // Ensure the _id field is set to the id being updated
+            const result = await lResult.findByIdAndUpdate(id, { $set: updatedData }, { new: true });
+            if (!result) {
+                return err(new Failure("Result not found", 404));
+            }
+            return ok(result);
+        } catch (error: any) {
+            debug("debug")(`Failed to update result by id: ${id}. The error is: ${error}`);
+            return err(new Failure("Failed to update result", 500));
         }
     }
 }

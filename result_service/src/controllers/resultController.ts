@@ -2,6 +2,8 @@ import { container } from "tsyringe";
 import AddResultDto from "../dto/result/addResultDto";
 import ResultService from "../services/resultService";
 import { Request, Response } from "express";
+import UpdateResultDto from "../dto/result/updateResultDto";
+import { Failure } from "../core/Failure";
 
 const service = container.resolve(ResultService);
 
@@ -64,6 +66,27 @@ export class ResultController {
     static async deleteResultById(req: Request, res: Response) {
         const id = req.params.id;
         let resultOrError = await service.deleteResultById(id);
+
+        if (resultOrError.isErr()) {
+            return res.status(resultOrError.error.code).send(resultOrError.error);
+        }
+        return res.status(200).send(resultOrError.value);
+    }
+
+    static async updateResultById(req: Request, res: Response) {
+        const dto = UpdateResultDto.fromAny(req.body);
+        const id = req.params.id;
+        const result = dto.isValid();
+
+        if (result.isErr()) {
+            return res.status(result.error.code).send(result.error);
+        }
+        if (!id) {
+            return res.status(400).send(new Failure("ID is required for update", 400));
+        }
+
+        const updatedData = dto.toModel();
+        let resultOrError = await service.updateResultById(id, updatedData);
 
         if (resultOrError.isErr()) {
             return res.status(resultOrError.error.code).send(resultOrError.error);

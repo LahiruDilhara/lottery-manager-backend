@@ -11,7 +11,7 @@ async function main() {
     const app: Application = express();
 
     // enable the debug library info and error without adding system environment variables
-    debug.enable("info,error");
+    debug.enable("info,error,debug");
 
     validateConfig();
     await connectToDatabase();

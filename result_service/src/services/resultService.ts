@@ -32,4 +32,8 @@ export default class ResultService {
     async getResultByLotteryIdAndDrawNumber(lotteryId: string, drawNumber: number): Promise<Result<lResult | null, Failure>> {
         return this.resultRepository.getResultByLotteryIdAndDrawNumber(lotteryId, drawNumber);
     }
+
+    async updateResultById(id: string, updatedData: Partial<lResult>): Promise<Result<lResult, Failure>> {
+        return this.resultRepository.updateResultById(id, updatedData);
+    }
 }
