@@ -63,7 +63,6 @@ export default class CheckerRepository {
 
     async updateCheckerById(id: string, updatedData: Partial<ResultChecker>): Promise<Result<ResultChecker, Failure>> {
         try {
-            updatedData._id = new Types.ObjectId(id); // Ensure the _id field is set to the id being updated
             const checker = await ResultChecker.findByIdAndUpdate(id, { $set: updatedData }, { new: true });
             if (!checker) {
                 return err(new Failure("ResultChecker not found", 404));

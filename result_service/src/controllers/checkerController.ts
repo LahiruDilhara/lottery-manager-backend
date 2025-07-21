@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import AddCheckerDto from "../dto/checker/addCheckerDto";
 import CheckerService from "../services/checkerService";
 import { container } from "tsyringe";
+import UpdateCheckerDto from "../dto/checker/updateCheckerDto";
 
 const service = container.resolve(CheckerService);
 
@@ -53,6 +54,23 @@ export class CheckerController {
     static async deleteCheckerById(req: any, res: any) {
         const id = req.params.id;
         let checkerOrError = await service.deleteCheckerById(id);
+
+        if (checkerOrError.isErr()) {
+            return res.status(checkerOrError.error.code).send(checkerOrError.error);
+        }
+        return res.status(200).send(checkerOrError.value);
+    }
+
+    static async updateCheckerById(req: any, res: any) {
+        const id = req.params.id;
+        const dto = UpdateCheckerDto.fromAny(req.body); // Assuming the body contains the updated checker data
+        const validity = dto.isValid();
+
+        if (validity.isErr()) {
+            return res.status(validity.error.code).send(validity.error);
+        }
+
+        let checkerOrError = await service.updateCheckerById(id, dto.toModel(id));
 
         if (checkerOrError.isErr()) {
             return res.status(checkerOrError.error.code).send(checkerOrError.error);

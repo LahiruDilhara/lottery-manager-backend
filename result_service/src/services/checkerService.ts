@@ -27,4 +27,8 @@ export default class CheckerService {
     async deleteCheckerById(id: string): Promise<Result<ResultChecker | null, Failure>> {
         return this.checkerRepository.deleteCheckerById(id);
     }
+
+    async updateCheckerById(id: string, updatedData: Partial<ResultChecker>): Promise<Result<ResultChecker, Failure>> {
+        return this.checkerRepository.updateCheckerById(id, updatedData);
+    }
 }

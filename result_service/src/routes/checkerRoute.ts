@@ -8,5 +8,6 @@ checkerRouter.post("/", CheckerController.createChecker);
 checkerRouter.get("/:id", CheckerController.getCheckerById);
 checkerRouter.get("/lottery/:lotteryId", CheckerController.getCheckerByLotteryId);
 checkerRouter.delete("/:id", CheckerController.deleteCheckerById);
+checkerRouter.patch("/:id", CheckerController.updateCheckerById);
 
 export default checkerRouter;
