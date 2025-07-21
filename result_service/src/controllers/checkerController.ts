@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import AddCheckerDto from "../dto/checker/addCheckerDto";
 import CheckerService from "../services/checkerService";
+import { container } from "tsyringe";
 
-const service = new CheckerService();
+const service = container.resolve(CheckerService);
 
 export class CheckerController {
     static async getAllCheckers(req: any, res: any) {
@@ -20,7 +21,7 @@ export class CheckerController {
         if (validity.isErr()) {
             return res.status(validity.error.code).send(validity.error);
         }
-        
+
         let checkerOrError = await service.addChecker(dto);
 
         if (checkerOrError.isErr()) {

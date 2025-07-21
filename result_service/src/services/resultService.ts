@@ -3,9 +3,11 @@ import lResult from "../model/lResult";
 import ResultRepository from "../repositories/resultRepository";
 import { Failure } from "../core/Failure";
 import AddResultDto from "../dto/result/addResultDto";
+import { container, inject, injectable } from "tsyringe";
 
+@injectable()
 export default class ResultService {
-    resultRepository: ResultRepository = new ResultRepository();
+    constructor(@inject(ResultRepository) private resultRepository: ResultRepository) { }
 
     async addResult(result: AddResultDto): Promise<Result<lResult, Failure>> {
         return this.resultRepository.addResult(result.toModel());
@@ -31,3 +33,5 @@ export default class ResultService {
         return this.resultRepository.getResultByLotteryIdAndDrawNumber(lotteryId, drawNumber);
     }
 }
+
+container.registerSingleton(ResultService);

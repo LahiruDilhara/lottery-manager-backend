@@ -3,9 +3,11 @@ import CheckerRepository from "../repositories/checkerRepository";
 import { Failure } from "../core/Failure";
 import AddCheckerDto from "../dto/checker/addCheckerDto";
 import ResultChecker from "../model/resultChecker";
+import { container, inject, injectable } from "tsyringe";
 
+@injectable()
 export default class CheckerService {
-    checkerRepository: CheckerRepository = new CheckerRepository();
+    constructor(@inject(CheckerRepository) private checkerRepository: CheckerRepository) { }
 
     async addChecker(addCheckerDto: AddCheckerDto): Promise<Result<ResultChecker, Failure>> {
         const dto = addCheckerDto.toModel();
@@ -26,3 +28,5 @@ export default class CheckerService {
         return this.checkerRepository.deleteCheckerById(id);
     }
 }
+
+container.registerSingleton(CheckerRepository);

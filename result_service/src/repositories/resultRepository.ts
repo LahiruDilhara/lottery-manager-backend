@@ -1,7 +1,9 @@
 import { ok, err, Result } from "neverthrow";
 import lResult from "../model/lResult";
 import { Failure } from "../core/Failure";
+import { container, injectable } from "tsyringe";
 
+@injectable()
 export default class ResultRepository {
     async addResult(result: lResult): Promise<Result<lResult, Failure>> {
         try {
@@ -82,3 +84,5 @@ export default class ResultRepository {
         }
     }
 }
+
+container.registerSingleton(ResultRepository);

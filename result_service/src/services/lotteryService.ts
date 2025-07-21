@@ -3,9 +3,11 @@ import AddLotteryDto from "../dto/lottery/addLotteryDto";
 import { Failure } from "../core/Failure";
 import LotteryRepository from '../repositories/lotteryRepository';
 import Lottery from "../model/lottery";
+import { container, inject, injectable } from "tsyringe";
 
+@injectable()
 export default class LotteryService {
-    lotteryRepository: LotteryRepository = new LotteryRepository();
+    constructor(@inject(LotteryRepository) private lotteryRepository: LotteryRepository) { }
 
     async createLottery(dto: AddLotteryDto): Promise<Result<Lottery, Failure>> {
         let lottery = await this.lotteryRepository.addLottery(dto.toModel());
@@ -25,3 +27,6 @@ export default class LotteryService {
         return this.lotteryRepository.deleteLotteryById(id);
     }
 }
+
+
+container.registerSingleton(LotteryService);

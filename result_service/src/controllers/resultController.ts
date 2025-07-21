@@ -1,8 +1,9 @@
+import { container } from "tsyringe";
 import AddResultDto from "../dto/result/addResultDto";
 import ResultService from "../services/resultService";
 import { Request, Response } from "express";
 
-const service = new ResultService();
+const service = container.resolve(ResultService);
 
 export class ResultController {
     static async getAllResults(req: Request, res: Response) {
@@ -58,7 +59,7 @@ export class ResultController {
         }
         return res.status(200).send(resultOrError.value);
     }
-    
+
 
     static async deleteResultById(req: Request, res: Response) {
         const id = req.params.id;

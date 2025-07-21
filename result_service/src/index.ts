@@ -1,3 +1,5 @@
+import "reflect-metadata";
+// This import is necessary to ensure that the decorators are processed correctly.
 import express, { Application } from "express";
 import validateConfig from "./startups/config";
 import connectToDatabase from "./startups/database";

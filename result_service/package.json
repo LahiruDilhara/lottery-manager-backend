@@ -25,7 +25,9 @@
     "json-logic-js": "^2.0.5",
     "mongoose": "^8.16.1",
     "morgan": "^1.10.0",
-    "neverthrow": "^8.2.0"
+    "neverthrow": "^8.2.0",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0"
   },
   "devDependencies": {
     "@types/config": "^3.3.5",

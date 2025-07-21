@@ -2,7 +2,9 @@ import debug from "debug";
 import { Failure } from "../core/Failure";
 import { ok, err, Result } from "neverthrow";
 import ResultChecker from "../model/resultChecker";
+import { container, injectable } from "tsyringe";
 
+@injectable()
 export default class CheckerRepository {
 
     async addChecker(checker: ResultChecker): Promise<Result<ResultChecker, Failure>> {
@@ -58,3 +60,6 @@ export default class CheckerRepository {
         }
     }
 }
+
+// register the respository as a singleton in the container
+container.registerSingleton(CheckerRepository);

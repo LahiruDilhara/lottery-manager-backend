@@ -1,8 +1,9 @@
+import { container, injectable } from "tsyringe";
 import AddLotteryDto from "../dto/lottery/addLotteryDto";
 import LotteryService from "../services/lotteryService";
 import { Request, Response } from "express";
 
-const service = new LotteryService();
+const service = container.resolve(LotteryService);
 
 export class LotteryController {
     static async getAllLotteries(req: Request, res: Response) {
