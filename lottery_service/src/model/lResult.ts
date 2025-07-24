@@ -8,7 +8,7 @@ interface lResult extends mongoose.Document {
     date: Date;
     drawNumber: number;
     lottery: Lottery | mongoose.Types.ObjectId;
-    checker: ResultChecker | mongoose.Types.ObjectId;
+    checker: ResultChecker | mongoose.Types.ObjectId | null;
     data: any;
 }
 
@@ -33,7 +33,8 @@ const lResultSchema = new mongoose.Schema<lResult>({
     checker: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "ResultChecker",
-        required: true,
+        required: false,
+        default: null,
     },
     data: {
         type: Object,

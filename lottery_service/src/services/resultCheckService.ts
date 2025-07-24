@@ -14,9 +14,12 @@ export default class ResultCheckService {
         if (resultOrError.isErr()) return err(resultOrError.error);
         const result = resultOrError.value;
         if (!(result instanceof Object)) {
-            return err(new Failure("Checker not found for the given lotteryId and drawNumber"));
+            return err(new Failure("Checker not found for the given lotteryId and drawNumber", 500));
         }
-        const checker = result.checker as ResultChecker;
+        if (!(result.checker instanceof ResultChecker) || !result.checker._id) {
+            return err(new Failure("No checker associated with this result", 500));
+        }
+        const checker = result.checker;
         const script = checker.script;
 
         const inputObj = {

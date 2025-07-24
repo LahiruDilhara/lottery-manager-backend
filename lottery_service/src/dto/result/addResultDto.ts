@@ -8,7 +8,7 @@ export default class AddResultDto {
     drawNumber?: number;
     lotteryId?: string;
     checkerId?: string;
-    data?:any;
+    data?: any;
 
     static fromAny(data: any): AddResultDto {
         const dto: AddResultDto = Object.assign(new AddResultDto(), data);
@@ -20,7 +20,7 @@ export default class AddResultDto {
             date: Joi.date().required(),
             drawNumber: Joi.number().required(),
             lotteryId: Joi.string().required(),
-            checkerId: Joi.string().required(),
+            checkerId: Joi.string().optional(),
             data: Joi.object().required(),
         });
         const { error } = schema.validate(this);
