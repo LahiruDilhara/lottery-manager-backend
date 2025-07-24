@@ -1,6 +1,6 @@
 # Microservices
 
-- each of these service should include
+- each of these service should include a health check route
 
 ## Lottery Service
 

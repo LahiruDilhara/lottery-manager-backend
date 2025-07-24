@@ -5,10 +5,12 @@ import { Failure } from '../../core/Failure';
 
 class AddLotteryDto {
     name?: string;
+    codeId?: number;
 
     isValid(): Result<void, Failure> {
         const schema = Joi.object({
-            name: Joi.string().min(3).max(100).required()
+            name: Joi.string().min(3).max(100).required(),
+            codeId: Joi.number().integer().min(1).required()
         });
 
         const { error } = schema.validate(this);
@@ -21,6 +23,7 @@ class AddLotteryDto {
     toModel(): Lottery {
         return new Lottery({
             name: this.name,
+            codeId: this.codeId
         });
     }
 
