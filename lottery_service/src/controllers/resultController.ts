@@ -32,29 +32,44 @@ export class ResultController {
         return res.status(201).send(resultOrError.value);
     }
 
-    static async getResultByLotteryId(req: Request, res: Response) {
-        const lotteryId = req.params.lotteryId;
-        let resultOrError = await service.getResultByLotteryId(lotteryId);
+    static async getResultsByLotteryCodeId(req: Request, res: Response) {
+        const lotteryCodeId = Number.parseInt(req.params.lotteryCodeId);
+        if (isNaN(lotteryCodeId)) {
+            return res.status(400).send(new Failure("Invalid lottery code ID", 400));
+        }
+        let resultOrError = await service.getResultsByLotteryCodeId(lotteryCodeId);
 
         if (resultOrError.isErr()) {
             return res.status(resultOrError.error.code).send(resultOrError.error);
         }
         return res.status(200).send(resultOrError.value);
     }
-    static async getResultByLotteryIdAndDate(req: Request, res: Response) {
-        const lotteryId = req.params.lotteryId;
+    static async getResultByLotteryCodeIdAndDate(req: Request, res: Response) {
+        const lotteryCodeId = Number.parseInt(req.params.lotteryCodeId);
+        if (isNaN(lotteryCodeId)) {
+            return res.status(400).send(new Failure("Invalid lottery code ID", 400));
+        }
         const date = new Date(req.params.date);
-        let resultOrError = await service.getResultByLotteryIdAndDate(lotteryId, date);
+        if (isNaN(date.getTime())) {
+            return res.status(400).send(new Failure("Invalid date format", 400));
+        }
+        let resultOrError = await service.getResultByLotteryCodeIdAndDate(lotteryCodeId, date);
 
         if (resultOrError.isErr()) {
             return res.status(resultOrError.error.code).send(resultOrError.error);
         }
         return res.status(200).send(resultOrError.value);
     }
-    static async getResultByLotteryIdAndDrawNumber(req: Request, res: Response) {
-        const lotteryId = req.params.lotteryId;
+    static async getResultByLotteryCodeIdAndDrawNumber(req: Request, res: Response) {
+        const lotteryCodeId = Number.parseInt(req.params.lotteryCodeId);
+        if (isNaN(lotteryCodeId)) {
+            return res.status(400).send(new Failure("Invalid lottery code ID", 400));
+        }
         const drawNumber = parseInt(req.params.drawNumber, 10);
-        let resultOrError = await service.getResultByLotteryIdAndDrawNumber(lotteryId, drawNumber);
+        if (isNaN(drawNumber)) {
+            return res.status(400).send(new Failure("Invalid draw number", 400));
+        }
+        let resultOrError = await service.getResultByLotteryCodeIdAndDrawNumber(lotteryCodeId, drawNumber);
 
         if (resultOrError.isErr()) {
             return res.status(resultOrError.error.code).send(resultOrError.error);

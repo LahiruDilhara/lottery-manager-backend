@@ -6,7 +6,7 @@ import lResult from "../../model/lResult";
 export default class AddResultDto {
     date?: Date;
     drawNumber?: number;
-    lotteryId?: string;
+    lotteryCodeId?: number;
     checkerId?: string;
     data?: any;
 
@@ -19,7 +19,7 @@ export default class AddResultDto {
         const schema = Joi.object({
             date: Joi.date().required(),
             drawNumber: Joi.number().required(),
-            lotteryId: Joi.string().required(),
+            lotteryCodeId: Joi.number().required(),
             checkerId: Joi.string().optional(),
             data: Joi.object().required(),
         });
@@ -34,7 +34,7 @@ export default class AddResultDto {
         return new lResult({
             date: this.date,
             drawNumber: this.drawNumber,
-            lottery: this.lotteryId,
+            lotteryCodeId: this.lotteryCodeId,
             checker: this.checkerId,
             data: this.data
         });

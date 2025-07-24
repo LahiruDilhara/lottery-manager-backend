@@ -20,8 +20,8 @@ export default class CheckerService {
         return this.checkerRepository.getAllCheckers();
     }
 
-    async getCheckersByLotteryId(lotteryId: string): Promise<Result<ResultChecker[], Failure>> {
-        return this.checkerRepository.getCheckersByLotteryId(lotteryId);
+    async getCheckersByLotteryCodeId(lotteryCodeId: number): Promise<Result<ResultChecker[], Failure>> {
+        return this.checkerRepository.getCheckersByLotteryCodeId(lotteryCodeId);
     }
 
     async deleteCheckerById(id: string): Promise<Result<ResultChecker | null, Failure>> {

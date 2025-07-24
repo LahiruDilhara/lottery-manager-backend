@@ -41,9 +41,12 @@ export class CheckerController {
         return res.status(200).send(checkerOrError.value);
     }
 
-    static async getCheckerByLotteryId(req: Request, res: Response) {
-        const id = req.params.lotteryId;
-        let checkerOrError = await service.getCheckersByLotteryId(id);
+    static async getCheckerByLotteryCodeId(req: Request, res: Response) {
+        const id = Number.parseInt(req.params.lotteryCodeId);
+        if (isNaN(id) || id <= 0) {
+            return res.status(400).send({ code: 400, message: "Invalid lottery code ID" });
+        }
+        let checkerOrError = await service.getCheckersByLotteryCodeId(id);
 
         if (checkerOrError.isErr()) {
             return res.status(checkerOrError.error.code).send(checkerOrError.error);

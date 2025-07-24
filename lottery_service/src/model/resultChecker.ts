@@ -4,7 +4,7 @@ import Lottery from "./lottery";
 interface ResultChecker extends mongoose.Document {
     _id: mongoose.Types.ObjectId;
     description: string;
-    lottery: Lottery | mongoose.Types.ObjectId;
+    lotteryCodeId: Number;
     addedAt?: Date;
     script: string;
 }
@@ -20,10 +20,16 @@ export const ResultCheckerSchema = new mongoose.Schema<ResultChecker>({
         unique: true,
         trim: true,
     },
-    lottery: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Lottery",
+    lotteryCodeId: {
+        type: Number,
         required: true,
+        validate: {
+            validator: async function (value: number) {
+                const exists = await Lottery.exists({ codeId: value });
+                return !!exists;
+            },
+            message: (props: any) => `Lottery with codeId ${props.value} does not exist`
+        }
     },
     addedAt: {
         type: Date,

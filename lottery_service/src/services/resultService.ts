@@ -13,8 +13,8 @@ export default class ResultService {
         return this.resultRepository.addResult(result.toModel());
     }
 
-    async getResultByLotteryId(lotteryId: string): Promise<Result<lResult | null, Failure>> {
-        return this.resultRepository.getResultByLotteryId(lotteryId);
+    async getResultsByLotteryCodeId(lotteryCodeId: number): Promise<Result<lResult | null, Failure>> {
+        return this.resultRepository.getResultsByLotteryCodeId(lotteryCodeId);
     }
 
     async getAllResults(): Promise<Result<lResult[], Failure>> {
@@ -25,12 +25,12 @@ export default class ResultService {
         return this.resultRepository.deleteResultById(id);
     }
 
-    async getResultByLotteryIdAndDate(lotteryId: string, date: Date): Promise<Result<lResult | null, Failure>> {
-        return this.resultRepository.getResultByLotteryIdAndDate(lotteryId, date);
+    async getResultByLotteryCodeIdAndDate(lotteryCodeId: number, date: Date): Promise<Result<lResult | null, Failure>> {
+        return this.resultRepository.getResultByLotteryCodeIdAndDate(lotteryCodeId, date);
     }
 
-    async getResultByLotteryIdAndDrawNumber(lotteryId: string, drawNumber: number): Promise<Result<lResult | null, Failure>> {
-        return this.resultRepository.getResultByLotteryIdAndDrawNumber(lotteryId, drawNumber);
+    async getResultByLotteryCodeIdAndDrawNumber(lotteryCodeId: number, drawNumber: number): Promise<Result<lResult | null, Failure>> {
+        return this.resultRepository.getResultByLotteryCodeIdAndDrawNumber(lotteryCodeId, drawNumber);
     }
 
     async updateResultById(id: string, updatedData: Partial<lResult>): Promise<Result<lResult, Failure>> {

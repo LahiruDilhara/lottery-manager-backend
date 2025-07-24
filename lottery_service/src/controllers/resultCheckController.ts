@@ -12,7 +12,7 @@ export class ResultCheckController {
         if (validationResult.isErr()) {
             return res.status(validationResult.error.code).send(validationResult.error);
         }
-        const resultOrError = await service.checkResults(dto.lotteryId!, dto.drawNumber!, dto.data!);
+        const resultOrError = await service.checkResults(dto.lotteryCodeId!, dto.drawNumber!, dto.data!);
         if (resultOrError.isErr()) {
             return res.status(resultOrError.error.code).send(resultOrError.error);
         }

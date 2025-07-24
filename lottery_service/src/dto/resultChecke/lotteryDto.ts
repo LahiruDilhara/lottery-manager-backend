@@ -3,7 +3,7 @@ import { Failure } from "../../core/Failure";
 import Joi from "joi";
 
 export default class LotteryDto {
-    lotteryId?: string;
+    lotteryCodeId?: number;
     drawNumber?: number;
     date?: Date;
     data: any;
@@ -16,7 +16,7 @@ export default class LotteryDto {
 
     isValid(): Result<void, Failure> {
         const schema = Joi.object({
-            lotteryId: Joi.string().required(),
+            lotteryCodeId: Joi.number().required(),
             drawNumber: Joi.number().required(),
             date: Joi.date().required(),
             data: Joi.object().required(),

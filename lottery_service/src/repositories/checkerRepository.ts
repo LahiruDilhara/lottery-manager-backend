@@ -3,7 +3,6 @@ import { Failure } from "../core/Failure";
 import { ok, err, Result } from "neverthrow";
 import ResultChecker from "../model/resultChecker";
 import { singleton } from "tsyringe";
-import { Types } from "mongoose";
 
 @singleton()
 export default class CheckerRepository {
@@ -38,13 +37,13 @@ export default class CheckerRepository {
         }
     }
 
-    async getCheckersByLotteryId(lotteryId: string): Promise<Result<ResultChecker[], Failure>> {
+    async getCheckersByLotteryCodeId(lotteryCodeId: number): Promise<Result<ResultChecker[], Failure>> {
         try {
-            const checkers = await ResultChecker.find({ lottery: lotteryId });
+            const checkers = await ResultChecker.find({ lotteryCodeId: lotteryCodeId });
             return ok(checkers);
         } catch (error: any) {
-            console.error(`Failed to get checkers by lotteryId: ${lotteryId}. The error is: ${error}`);
-            return err(new Failure("Failed to get checkers by lotteryId", 500));
+            console.error(`Failed to get checkers by lotteryCodeId: ${lotteryCodeId}. The error is: ${error}`);
+            return err(new Failure("Failed to get checkers by lotteryCodeId", 500));
         }
     }
 

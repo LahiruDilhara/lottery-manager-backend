@@ -7,7 +7,7 @@ import { Types } from "mongoose";
 export default class UpdateResultDto {
     date?: Date;
     drawNumber?: number;
-    lotteryId?: string;
+    lotteryCodeId?: number;
     checkerId?: string;
     data?: any;
 
@@ -20,7 +20,7 @@ export default class UpdateResultDto {
         const schema = Joi.object({
             date: Joi.date(),
             drawNumber: Joi.number(),
-            lotteryId: Joi.string(),
+            lotteryCodeId: Joi.number(),
             checkerId: Joi.string(),
             data: Joi.object(),
         });
@@ -36,7 +36,7 @@ export default class UpdateResultDto {
             _id: new Types.ObjectId(resultId),
             date: this.date,
             drawNumber: this.drawNumber,
-            lottery: this.lotteryId,
+            lotteryCodeId: this.lotteryCodeId,
             checker: this.checkerId,
             data: this.data
         });

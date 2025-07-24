@@ -7,7 +7,7 @@ interface lResult extends mongoose.Document {
     _id: mongoose.Types.ObjectId;
     date: Date;
     drawNumber: number;
-    lottery: Lottery | mongoose.Types.ObjectId;
+    lotteryCodeId: number;
     checker: ResultChecker | mongoose.Types.ObjectId | null;
     data: any;
 }
@@ -25,10 +25,16 @@ const lResultSchema = new mongoose.Schema<lResult>({
         type: Number,
         required: true,
     },
-    lottery: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Lottery",
+    lotteryCodeId: {
+        type: Number,
         required: true,
+        validate: {
+            validator: async function (value: number) {
+                const exists = await Lottery.exists({ codeId: value });
+                return !!exists;
+            },
+            message: (props: any) => `Lottery with codeId ${props.value} does not exist`
+        }
     },
     checker: {
         type: mongoose.Schema.Types.ObjectId,

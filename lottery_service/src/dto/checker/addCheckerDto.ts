@@ -5,13 +5,13 @@ import ResultChecker from "../../model/resultChecker";
 
 class AddCheckerDto {
     description?: string;
-    lotteryId?: string;
+    lotteryCodeId?: number;
     script?: string;
 
     isValid(): Result<void, Failure> {
         const schema = Joi.object({
             description: Joi.string().min(3).max(1000).required(),
-            lotteryId: Joi.string().required(),
+            lotteryCodeId: Joi.number().required(),
             script: Joi.string().required()
         });
 
@@ -25,7 +25,7 @@ class AddCheckerDto {
     toModel(): ResultChecker {
         return new ResultChecker({
             description: this.description,
-            lottery: this.lotteryId,
+            lotteryCodeId: this.lotteryCodeId,
             script: this.script,
         });
     }

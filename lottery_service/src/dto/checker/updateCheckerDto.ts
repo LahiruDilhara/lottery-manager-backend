@@ -6,14 +6,14 @@ import { Types } from "mongoose";
 
 export default class UpdateCheckerDto {
     description?: string;
-    lotteryId?: string;
+    lotteryCodeId?: number;
     script?: string;
 
     isValid(): Result<void, Failure> {
         const schema = Joi.object({
-            description: Joi.string().min(3).max(1000).required(),
-            lotteryId: Joi.string().required(),
-            script: Joi.string().required()
+            description: Joi.string().min(3).max(1000),
+            lotteryCodeId: Joi.number().integer().min(1),
+            script: Joi.string()
         });
 
         const { error } = schema.validate(this);
@@ -27,7 +27,7 @@ export default class UpdateCheckerDto {
         return new ResultChecker({
             _id: new Types.ObjectId(checkerId),
             description: this.description,
-            lottery: this.lotteryId,
+            lotteryCodeId: this.lotteryCodeId,
             script: this.script,
         });
     }
