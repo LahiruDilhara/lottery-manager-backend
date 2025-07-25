@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import resolverRouter from '../routes/resolverRoute';
+import qrExecutorRouter from '../routes/qrExecutorRoute';
 
 export default function configMiddlewareAndRoutes(app: Application): void {
     // Enable CORS
@@ -22,4 +23,5 @@ export default function configMiddlewareAndRoutes(app: Application): void {
 
 function configRouteMiddlware(app: Application): void {
     app.use("/api/v1/resolvers", resolverRouter);
+    app.use("/api/v1/executors", qrExecutorRouter);
 }

@@ -2,6 +2,7 @@ import { container } from "tsyringe";
 import ResolverService from "../services/resolverService";
 import AddresolverDto from "../dto/resolver/addResolverDto";
 import UpdateResolverDto from "../dto/resolver/updateResolverDto";
+import EventBus from "../core/EventBus";
 
 const service = container.resolve(ResolverService);
 
@@ -19,6 +20,7 @@ export default class ResolverController {
         if (resultOrError.isErr()) {
             return res.status(resultOrError.error.code).send(resultOrError.error);
         }
+        EventBus.emit("loadCache");
         return res.status(201).send(resultOrError.value);
     }
 
@@ -38,6 +40,7 @@ export default class ResolverController {
         if (resultOrError.isErr()) {
             return res.status(resultOrError.error.code).send(resultOrError.error);
         }
+        EventBus.emit("loadCache");
         return res.status(200).send(resultOrError.value);
     }
 
@@ -73,6 +76,7 @@ export default class ResolverController {
         if (resultOrError.isErr()) {
             return res.status(resultOrError.error.code).send(resultOrError.error);
         }
+        EventBus.emit("loadCache");
         return res.status(200).send(resultOrError.value);
     }
 }
