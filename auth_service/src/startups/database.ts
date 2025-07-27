@@ -1,7 +1,10 @@
 import c from 'config';
 import debug from 'debug';
-import { PrismaClient } from '@prisma/client';
 import { Client } from "pg";
+import { DataSource } from 'typeorm';
+import User from '../model/User';
+import { exit } from 'process';
+import { container, singleton } from 'tsyringe';
 
 const TARGET_DB = "auth";
 
@@ -28,24 +31,35 @@ async function ensureDatabaseExists() {
     await adminClient.end();
 }
 
-async function testPrismaConnection() {
-    const dbUrl = c.get<string>("database.url");
-    process.env.DATABASE_URL = dbUrl;
+@singleton()
+export class DatabaseConnection extends DataSource {
+    constructor() {
+        super({
+            type: "postgres",
+            host: c.get("database.host"),
+            port: c.get<number>("database.port"),
+            username: c.get("database.user"),
+            password: c.get("database.password"),
+            database: TARGET_DB,
+            synchronize: true,
+            logging: false,
+            entities: [User]
+        });
+    }
 
-
-    const prisma = new PrismaClient();
-
-    try {
-        await prisma.$connect();
-        debug("info")("Prisma connection established successfully.");
-    } catch (error) {
-        debug("error")("Error establishing Prisma connection:", error);
-    } finally {
-        await prisma.$disconnect();
+    async connectDatabase(): Promise<void> {
+        await this.initialize();
+        if (!this.isInitialized) {
+            debug("error")("Database connection failed to initialize.");
+            exit(1);
+        }
+        debug("info")("ORM Database connection established successfully.");
     }
 }
 
+
+
 export default async function connectToDatabase() {
     await ensureDatabaseExists();
-    await testPrismaConnection();
+    await container.resolve(DatabaseConnection).connectDatabase();
 }

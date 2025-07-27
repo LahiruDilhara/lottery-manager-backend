@@ -13,7 +13,7 @@ export default class JwtTokenService {
 
     generateToken(user: User): string {
         const payload = {
-            id: user._id,
+            id: user.id,
             name: user.name,
             role: user.role
         };
@@ -32,5 +32,13 @@ export default class JwtTokenService {
             console.error("JWT verification failed:", error);
             return false;
         }
+    }
+
+    verifyBearerToken(bearerToken: string): boolean {
+        if (!bearerToken.startsWith("Bearer ")) {
+            return false;
+        }
+        const token = bearerToken.slice(7);
+        return this.verifyToken(token);
     }
 }

@@ -1,55 +1,33 @@
-import mongoose from "mongoose";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-interface User extends mongoose.Document {
-    _id: mongoose.Types.ObjectId;
-    name: string;
-    description?: string;
-    role: string;
-    password: string;
-    addedAt?: Date;
-    blocked?: boolean;
-    lastLogin?: Date;
+export enum UserRole {
+    ADMIN = "admin",
+    USER = "user"
 }
 
-export const UserSchema = new mongoose.Schema<User>({
-    _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        default: () => new mongoose.Types.ObjectId(),
-    },
-    name: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    description: {
-        type: String,
-        trim: true,
-        default: null
-    },
-    role: {
-        type: String,
-        enum: ["admin", "user"],
-        default: "user",
-    },
-    password: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    addedAt: {
-        type: Date,
-        default: Date.now,
-    },
-    blocked: {
-        type: Boolean,
-        default: false,
-    },
-    lastLogin: {
-        type: Date,
-        default: null,
-    },
-});
+@Entity()
+export default class User {
+    @PrimaryGeneratedColumn()
+    id!: number;
 
+    @Column({ unique: true })
+    name!: string;
 
-const User = mongoose.model<User>("User", UserSchema, "User");
-export default User;
+    @Column({ nullable: true })
+    description?: string;
+
+    @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
+    role!: UserRole;
+
+    @Column()
+    password!: string;
+
+    @Column({ nullable: true, default: () => "CURRENT_TIMESTAMP" })
+    addedAt?: Date;
+
+    @Column({ default: false })
+    blocked?: boolean;
+
+    @Column({ nullable: true })
+    lastLogin?: Date;
+}
