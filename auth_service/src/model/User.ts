@@ -32,5 +32,5 @@ export default class User {
     lastLogin?: Date | null;
 
     @Column({ type: "boolean", nullable: true, default: false })
-    canRestorePassword?: boolean;
+    canResetPassword?: boolean;
 }

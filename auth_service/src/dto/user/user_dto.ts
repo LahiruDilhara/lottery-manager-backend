@@ -8,7 +8,7 @@ export default class UserDto {
     addedAt?: Date | null;
     blocked?: boolean;
     lastLogin?: Date | null;
-    canRestorePassword?: boolean;
+    canResetPassword?: boolean;
 
     static fromUser(user: User): UserDto {
         const dto = new UserDto();
@@ -19,7 +19,7 @@ export default class UserDto {
         dto.addedAt = user.addedAt;
         dto.blocked = user.blocked;
         dto.lastLogin = user.lastLogin;
-        dto.canRestorePassword = user.canRestorePassword;
+        dto.canResetPassword = user.canResetPassword!;
         return dto;
     }
 }
