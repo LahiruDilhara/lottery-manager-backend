@@ -5,7 +5,7 @@ export enum UserRole {
     USER = "user"
 }
 
-@Entity()
+@Entity("auth_users")
 export default class User {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -22,12 +22,15 @@ export default class User {
     @Column()
     password!: string;
 
-    @Column({ nullable: true, default: () => "CURRENT_TIMESTAMP" })
-    addedAt?: Date;
+    @Column({ type: "timestamp", nullable: true, default: () => "CURRENT_TIMESTAMP" })
+    addedAt?: Date | null;
 
-    @Column({ default: false })
+    @Column({ type: "boolean", default: false })
     blocked?: boolean;
 
-    @Column({ nullable: true })
-    lastLogin?: Date;
+    @Column({ type: "timestamp", nullable: true })
+    lastLogin?: Date | null;
+
+    @Column({ type: "boolean", nullable: true, default: false })
+    canRestorePassword?: boolean;
 }

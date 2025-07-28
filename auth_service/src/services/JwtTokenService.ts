@@ -1,7 +1,7 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 import c from 'config';
 import User from '../model/User';
-import { singleton } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 
 
 const jwtSecret = c.get("jwtSecret") as string;
@@ -9,6 +9,7 @@ const jwtExpiration = c.get("jwtExpiration") as `${number}${"ms" | "s" | "m" | "
 
 @singleton()
 export default class JwtTokenService {
+
     // Implementation of JWT token generation and validation
 
     generateToken(user: User): string {
