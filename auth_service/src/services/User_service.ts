@@ -1,10 +1,11 @@
 import { inject, singleton } from "tsyringe";
 import UserRepository from "../repositories/User_repository";
 import User from "../model/User";
-import { Result } from "neverthrow";
+import { err, Result } from "neverthrow";
 import { Failure } from "../core/Failure";
 import bcrypt from "bcryptjs";
 import AddUserDto from "../dto/user/add_user_dto";
+import UpdateUserDto from "../dto/user/update_user_dto";
 
 @singleton()
 export default class UserService {
@@ -27,8 +28,10 @@ export default class UserService {
         return this.userRepository.getUserByName(name);
     }
 
-    async updateUser(user: User): Promise<Result<User, Failure>> {
-        return this.userRepository.updateUser(user);
+    async updateUser(id: number, user: UpdateUserDto): Promise<Result<User, Failure>> {
+        const updatedUser = new User();
+        Object.assign(updatedUser, user);
+        return this.userRepository.updateUser(id, updatedUser);
     }
 
     async deleteUser(id: number): Promise<Result<void, Failure>> {

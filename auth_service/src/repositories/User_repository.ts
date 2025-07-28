@@ -62,10 +62,16 @@ export default class UserRepository {
         }
     }
 
-    async updateUser(user: User): Promise<Result<User, Failure>> {
+    async updateUser(id: number, user: User): Promise<Result<User, Failure>> {
+        const existingUserOrError = await this.getUserById(id);
+        if (existingUserOrError.isErr()) {
+            return existingUserOrError;
+        }
+        const existingUser = existingUserOrError.value;
+        Object.assign(existingUser, user);
         try {
-            this.cacheUserDataSource.removeUser(user.id);
-            const updatedUser = await this.databaseConnection.getRepository(User).save(user);
+            this.cacheUserDataSource.removeUser(id);
+            const updatedUser = await this.databaseConnection.getRepository(User).save(existingUser);
             this.cacheUserDataSource.addUser(updatedUser);
             return ok(updatedUser);
         } catch (error) {
