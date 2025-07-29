@@ -87,4 +87,23 @@ export default class UserService {
         const resultOrError = await this.userRepository.updateUser(id, user);
         return resultOrError;
     }
+
+    async restorePassword(id: number, password: string): Promise<Result<User, Failure>> {
+        const userOrError = await this.userRepository.getUserById(id);
+        if (userOrError.isErr()) {
+            return err(userOrError.error);
+        }
+        const user = userOrError.value;
+        console.log(user)
+
+        if (!user.canResetPassword) {
+            return err(new Failure("User cannot reset password", 403));
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+
+        const resultOrError = await this.userRepository.updateUser(id, user);
+        return resultOrError;
+    }
 }

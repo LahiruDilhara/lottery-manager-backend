@@ -22,15 +22,15 @@ export default class User {
     @Column()
     password!: string;
 
-    @Column({ type: "timestamp", nullable: true, default: () => "CURRENT_TIMESTAMP" })
-    addedAt?: Date | null;
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+    addedAt!: Date | null;
 
     @Column({ type: "boolean", default: false })
-    blocked?: boolean;
+    blocked!: boolean;
 
     @Column({ type: "timestamp", nullable: true })
     lastLogin?: Date | null;
 
     @Column({ type: "boolean", nullable: true, default: false })
-    canResetPassword?: boolean;
+    canResetPassword!: boolean;
 }

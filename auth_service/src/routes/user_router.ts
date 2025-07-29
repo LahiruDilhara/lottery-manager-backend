@@ -12,5 +12,6 @@ userRouter.get("/", UserController.getAllUsers);
 userRouter.post("/:id/block", UserController.setBlockUser);
 userRouter.post("/:id/change-password", UserController.changePassword);
 userRouter.post("/:id/reset-password", UserController.setResetPassword);
+userRouter.post("/:id/restore-password", UserController.restorePassword);
 
 export default userRouter;
