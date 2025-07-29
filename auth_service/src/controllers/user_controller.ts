@@ -93,4 +93,32 @@ export default class UserController {
         const usersDto = resultOrError.value.map(user => UserDto.fromUser(user));
         return res.status(200).send(usersDto);
     }
+
+    static async blockUser(req: any, res: any) {
+        const id = parseInt(req.params.id, 10);
+        if (isNaN(id)) {
+            return res.status(400).send({ message: "Invalid user ID" });
+        }
+
+        const resultOrError = await service.blockUser(id);
+
+        if (resultOrError.isErr()) {
+            return res.status(resultOrError.error.code).send(resultOrError.error);
+        }
+        return res.status(200).send(UserDto.fromUser(resultOrError.value));
+    }
+
+    static async unblockUser(req: any, res: any) {
+        const id = parseInt(req.params.id, 10);
+        if (isNaN(id)) {
+            return res.status(400).send({ message: "Invalid user ID" });
+        }
+
+        const resultOrError = await service.unblockUser(id);
+
+        if (resultOrError.isErr()) {
+            return res.status(resultOrError.error.code).send(resultOrError.error);
+        }
+        return res.status(200).send(UserDto.fromUser(resultOrError.value));
+    }
 }

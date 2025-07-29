@@ -41,4 +41,18 @@ export default class UserService {
     async getAllUsers(): Promise<Result<User[], Failure>> {
         return this.userRepository.getAllUsers();
     }
+
+    async blockUser(id: number): Promise<Result<User, Failure>> {
+        const updatedUser = new User();
+        updatedUser.blocked = true;
+        const resultOrError = await this.userRepository.updateUser(id, updatedUser);
+        return resultOrError;
+    }
+
+    async unblockUser(id: number): Promise<Result<User, Failure>> {
+        const updatedUser = new User();
+        updatedUser.blocked = false;
+        const resultOrError = await this.userRepository.updateUser(id, updatedUser);
+        return resultOrError;
+    }
 }
