@@ -2,7 +2,6 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import resolverRouter from '../routes/resolverRoute';
 import userRouter from '../routes/user_router';
 
 export default function configMiddlewareAndRoutes(app: Application): void {
