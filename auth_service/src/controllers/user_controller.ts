@@ -69,4 +69,28 @@ export default class UserController {
         }
         return res.status(200).send(UserDto.fromUser(resultOrError.value));
     }
+
+    static async deleteUser(req: any, res: any) {
+        const id = parseInt(req.params.id, 10);
+        if (isNaN(id)) {
+            return res.status(400).send({ message: "Invalid user ID" });
+        }
+
+        const resultOrError = await service.deleteUser(id);
+
+        if (resultOrError.isErr()) {
+            return res.status(resultOrError.error.code).send(resultOrError.error);
+        }
+        return res.status(204).send();
+    }
+
+    static async getAllUsers(req: any, res: any) {
+        const resultOrError = await service.getAllUsers();
+
+        if (resultOrError.isErr()) {
+            return res.status(resultOrError.error.code).send(resultOrError.error);
+        }
+        const usersDto = resultOrError.value.map(user => UserDto.fromUser(user));
+        return res.status(200).send(usersDto);
+    }
 }
