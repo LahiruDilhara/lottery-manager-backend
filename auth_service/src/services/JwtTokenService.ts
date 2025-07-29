@@ -2,6 +2,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 import c from 'config';
 import User from '../model/User';
 import { inject, singleton } from 'tsyringe';
+import JwtTokenPayloadEntity from '../entities/JwtTokenPayloadEntity';
 
 
 const jwtSecret = c.get("jwtSecret") as string;
@@ -13,11 +14,8 @@ export default class JwtTokenService {
     // Implementation of JWT token generation and validation
 
     generateToken(user: User): string {
-        const payload = {
-            id: user.id,
-            name: user.name,
-            role: user.role
-        };
+        const jwtTokenPayload = JwtTokenPayloadEntity.fromUser(user);
+        const payload = { ...jwtTokenPayload }
         const options: SignOptions = {
             expiresIn: jwtExpiration
         }
@@ -41,5 +39,15 @@ export default class JwtTokenService {
         }
         const token = bearerToken.slice(7);
         return this.verifyToken(token);
+    }
+
+    decodeToken(token: string): JwtTokenPayloadEntity | null {
+        try {
+            const decoded = jwt.verify(token, jwtSecret) as JwtTokenPayloadEntity;
+            return decoded;
+        } catch (error) {
+            console.error("JWT decoding failed:", error);
+            return null;
+        }
     }
 }
