@@ -6,6 +6,7 @@ import { Failure } from "../core/Failure";
 import bcrypt from "bcryptjs";
 import AddUserDto from "../dto/user/add_user_dto";
 import UpdateUserDto from "../dto/user/update_user_dto";
+import ChangePasswordDto from "../dto/user/change_password_dto";
 
 @singleton()
 export default class UserService {
@@ -42,17 +43,48 @@ export default class UserService {
         return this.userRepository.getAllUsers();
     }
 
-    async blockUser(id: number): Promise<Result<User, Failure>> {
-        const updatedUser = new User();
-        updatedUser.blocked = true;
-        const resultOrError = await this.userRepository.updateUser(id, updatedUser);
+    async changePassword(id: number, changePasswordDto: ChangePasswordDto): Promise<Result<User, Failure>> {
+        const userOrError = await this.userRepository.getUserById(id);
+        if (userOrError.isErr()) {
+            return err(userOrError.error);
+        }
+
+        const user = userOrError.value;
+        const isMatch = await bcrypt.compare(changePasswordDto.oldPassword, user.password);
+        if (!isMatch) {
+            return err(new Failure("Old password is incorrect", 401));
+        }
+
+        const hashedNewPassword = await bcrypt.hash(changePasswordDto.newPassword, 10);
+        user.password = hashedNewPassword;
+
+        const resultOrError = await this.userRepository.updateUser(id, user);
         return resultOrError;
     }
 
-    async unblockUser(id: number): Promise<Result<User, Failure>> {
-        const updatedUser = new User();
-        updatedUser.blocked = false;
-        const resultOrError = await this.userRepository.updateUser(id, updatedUser);
+    async setResetPassword(id: number, canReset: boolean): Promise<Result<User, Failure>> {
+        const userOrError = await this.userRepository.getUserById(id);
+        if (userOrError.isErr()) {
+            return err(userOrError.error);
+        }
+
+        const user = userOrError.value;
+        user.canResetPassword = canReset;
+
+        const resultOrError = await this.userRepository.updateUser(id, user);
+        return resultOrError;
+    }
+
+    async setBlockUser(id: number, block: boolean): Promise<Result<User, Failure>> {
+        const userOrError = await this.userRepository.getUserById(id);
+        if (userOrError.isErr()) {
+            return err(userOrError.error);
+        }
+
+        const user = userOrError.value;
+        user.blocked = block;
+
+        const resultOrError = await this.userRepository.updateUser(id, user);
         return resultOrError;
     }
 }

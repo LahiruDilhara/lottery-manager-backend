@@ -9,7 +9,8 @@ userRouter.get("/name/:name", UserController.getUserByName);
 userRouter.patch("/:id", UserController.updateUser);
 userRouter.delete("/:id", UserController.deleteUser);
 userRouter.get("/", UserController.getAllUsers);
-userRouter.post("/:id/block", UserController.blockUser);
-userRouter.post("/:id/unblock", UserController.unblockUser);
+userRouter.post("/:id/block", UserController.setBlockUser);
+userRouter.post("/:id/change-password", UserController.changePassword);
+userRouter.post("/:id/reset-password", UserController.setResetPassword);
 
 export default userRouter;
