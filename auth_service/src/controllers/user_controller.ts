@@ -7,6 +7,8 @@ import ChangePasswordDto from "../dto/user/change_password_dto";
 import ResetPasswordDto from "../dto/user/reset_password_dto";
 import BlockUserDto from "../dto/user/block_user_dto";
 import RestorePasswordDto from "../dto/user/restore_password_dto";
+import SignInDto from "../dto/user/sign_in_dto";
+import JwtTokenDto from "../dto/user/jwt_token";
 
 const service = container.resolve(UserService);
 
@@ -176,6 +178,35 @@ export default class UserController {
             return res.status(resultOrError.error.code).send(resultOrError.error);
         }
         return res.status(200).send(UserDto.fromUser(resultOrError.value));
+    }
+
+    static async signUp(req: any, res: any) {
+        const dto = AddUserDto.fromAny(req.body);
+        const result = dto.isValid();
+        if (result.isErr()) {
+            return res.status(result.error.code).send(result.error);
+        }
+
+        const resultOrError = await service.signUp(dto);
+        if (resultOrError.isErr()) {
+            return res.status(resultOrError.error.code).send(resultOrError.error);
+        }
+        return res.status(201).send(new JwtTokenDto(resultOrError.value));
+    }
+
+    static async signIn(req: any, res: any) {
+        const dto = SignInDto.fromAny(req.body);
+        const result = dto.isValid();
+        if (result.isErr()) {
+            return res.status(result.error.code).send(result.error);
+        }
+
+        const resultOrError = await service.signIn(dto.name, dto.password);
+
+        if (resultOrError.isErr()) {
+            return res.status(resultOrError.error.code).send(resultOrError.error);
+        }
+        return res.status(200).send(new JwtTokenDto(resultOrError.value));
     }
 
 }
