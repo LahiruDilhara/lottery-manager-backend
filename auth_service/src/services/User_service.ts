@@ -89,6 +89,7 @@ export default class UserService {
         return resultOrError;
     }
 
+    // no need to be login in
     async restorePassword(id: number, password: string): Promise<Result<User, Failure>> {
         const userOrError = await this.userRepository.getUserById(id);
         if (userOrError.isErr()) {
@@ -108,6 +109,7 @@ export default class UserService {
         return resultOrError;
     }
 
+    // no need to be login in
     async signUp(user: AddUserDto): Promise<Result<string, Failure>> {
         const addUserResult = await this.addUser(user);
         if (addUserResult.isErr()) {
@@ -118,6 +120,7 @@ export default class UserService {
         return ok(token);
     }
 
+    // no need to be login in
     async signIn(name: string, password: string): Promise<Result<string, Failure>> {
         const userOrError = await this.getUserByName(name);
         if (userOrError.isErr()) {

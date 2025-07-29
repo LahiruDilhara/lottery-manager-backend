@@ -1,9 +1,11 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 import c from 'config';
 import User from '../model/User';
-import { inject, singleton } from 'tsyringe';
+import { singleton } from 'tsyringe';
 import JwtTokenPayloadEntity from '../entities/JwtTokenPayloadEntity';
-
+import { ok, err, Result } from 'neverthrow';
+import { Failure } from '../core/Failure';
+import debug from 'debug';
 
 const jwtSecret = c.get("jwtSecret") as string;
 const jwtExpiration = c.get("jwtExpiration") as `${number}${"ms" | "s" | "m" | "h" | "d" | "w" | "y"}`;
@@ -23,31 +25,29 @@ export default class JwtTokenService {
         return token;
     };
 
-    verifyToken(token: string): boolean {
+    decodeToken(token: string): Result<JwtTokenPayloadEntity, Failure> {
         try {
-            jwt.verify(token, jwtSecret);
-            return true;
+            const decoded = jwt.verify(token, jwtSecret);
+            if (typeof decoded !== "object" || !decoded) {
+                return err(new Failure("Invalid JWT token", 401));
+            }
+            const payload = JwtTokenPayloadEntity.fromAny(decoded);
+            const validationResult = payload.isValid();
+            if (validationResult.isErr()) {
+                return err(new Failure("Invalid JWT token payload", 401));
+            }
+            return ok(payload);
         } catch (error) {
-            console.error("JWT verification failed:", error);
-            return false;
+            debug("error")("JWT decoding failed:", error);
+            return err(new Failure("JWT decoding failed", 401));
         }
     }
 
-    verifyBearerToken(bearerToken: string): boolean {
+    decodeBearerToken(bearerToken: string): Result<JwtTokenPayloadEntity, Failure> {
         if (!bearerToken.startsWith("Bearer ")) {
-            return false;
+            return err(new Failure("Invalid Bearer token format", 400));
         }
         const token = bearerToken.slice(7);
-        return this.verifyToken(token);
-    }
-
-    decodeToken(token: string): JwtTokenPayloadEntity | null {
-        try {
-            const decoded = jwt.verify(token, jwtSecret) as JwtTokenPayloadEntity;
-            return decoded;
-        } catch (error) {
-            console.error("JWT decoding failed:", error);
-            return null;
-        }
+        return this.decodeToken(token);
     }
 }
